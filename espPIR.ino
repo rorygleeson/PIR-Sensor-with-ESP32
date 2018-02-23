@@ -12,8 +12,8 @@
 #include <esp_system.h>
 
 
-const char* ssid = "smartTrap";
-const char* password =  "skygridio";
+const char* ssid = "xxxxxxxxxxxx";
+const char* password =  "xxxxxxxxxxx";
  
 
 int attemptsCount = 0;
@@ -25,22 +25,19 @@ void setup() {
     delay(1000); /* Take some time to open up the Serial Monitor */
     USE_SERIAL.print("In Setup..........\n");
     wake  = wakeup_reason1();
-    Serial.println("WAKE IS..\n");
+    Serial.println("WAKE IS..\n");                      /* The wake reason allows us to know what woke the esp32 up, ext int or other */
     Serial.println(wake);
 
 
-     USE_SERIAL.printf("Wait one minute for PIR to settle");
-
-
-   
+    USE_SERIAL.printf("Wait one minute for PIR to settle");
     for(uint8_t t = 60; t > 0; t--) {
         delay(1000);
     }
 
 
     
-    USE_SERIAL.print("First DISCONNECT from  WIFI..then connect to WIFI....\n");
-    WiFi.disconnect(true);        // forum recommendation to fix  bug of not connecting to wifi...maybe not required.
+    USE_SERIAL.print("First DISCONNECT from  WIFI..then connect to WIFI....\n");       
+    WiFi.disconnect(true);                                                              // forum recommendation to fix  bug of not connecting to wifi...maybe not required.
     WiFi.begin(ssid, password);
  
     while (WiFi.waitForConnectResult() != WL_CONNECTED) 
@@ -49,7 +46,7 @@ void setup() {
             ++attemptsCount;
             USE_SERIAL.println("Attempts...\n");
             USE_SERIAL.println(attemptsCount);
-            delay(2000);                              // give it 10 seconds
+            delay(2000);                              // wait 2 secs
             
               if(attemptsCount == 5)                  // we have failed to connect to WIFI after 5 attempts
               {   
@@ -101,7 +98,7 @@ void loop() {
         Serial.println("Send event to SkyGrid");
         HTTPClient http;
         USE_SERIAL.print("[HTTP] begin...\n");
-        String url = "http://192.168.0.100/ratHub.php?btnID=";
+        String url = "http://192.168.0.100/myHub.php?btnID=";
         url += clientMac;
         url += "&resetCause=";
         url += wake;
